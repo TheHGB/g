@@ -18,8 +18,9 @@ def game(word):
     errors = 0
     for char in word:
         mistery.append("_ ")
+    print word
 
-    while errors <  len(list_of_hangmen): 
+    while errors <  len(list_of_hangmen) : 
         drawHangman(list_of_hangmen[errors])
         print "".join(mistery)
         meh = raw_input("\nChoose a letter\n")
@@ -27,15 +28,15 @@ def game(word):
         if meh and positions and meh + " " not in mistery:
             for position in positions:
                 mistery[position] = meh + " "
+            if '_ ' not in mistery:
+                print "Congratulations, you win"
+                break
         else:
             errors += 1
-
+            if errors == len(list_of_hangmen):
+                print "You loose, the word was " + word
+                break 
 
 if __name__ == "__main__":
     
     game(selectWord())
-
-
-
-
-
