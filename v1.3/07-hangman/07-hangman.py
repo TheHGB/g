@@ -18,7 +18,6 @@ def game(word):
     errors = 0
     for char in word:
         mistery.append("_ ")
-    print word
 
     while errors <  len(list_of_hangmen) : 
         drawHangman(list_of_hangmen[errors])
