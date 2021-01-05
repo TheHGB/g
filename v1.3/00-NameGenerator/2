@@ -1,0 +1,5 @@
+import os
+
+print (int(binascii.hexlify(os.urandom(10), 16)))
+
+
