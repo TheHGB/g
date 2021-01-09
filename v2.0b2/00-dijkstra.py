@@ -4,30 +4,47 @@ import random
 
 
 # Graph representation is an adjacency matrix with weights.  For convenience (lazyness), the first node is always the origin
-graph = [[0, 5, 0, 0, 3],
+graph1 = [[0, 5, 0, 0, 3],
          [5, 0, 1, 1, 1],
          [0, 1, 0, 2, 0],
          [0, 1, 2, 0, 1],
          [3, 1, 0, 1, 0]]
 
-# Manually setting the destination
-destination_node = 3 
+
+graph2 = [[0, 4, 0, 0, 0, 0, 0, 8, 0],
+        [4, 0, 8, 0, 0, 0, 0, 11, 0],
+        [0, 8, 0, 7, 0, 4, 0, 0, 2],
+        [0, 0, 7, 0, 9, 14, 0, 0, 0],
+        [0, 0, 0, 9, 0, 10, 0, 0, 0],
+        [0, 0, 4, 14, 10, 0, 2, 0, 0],
+        [0, 0, 0, 0, 0, 2, 0, 1, 6],
+        [8, 11, 0, 0, 0, 0, 1, 0, 7],
+        [0, 0, 2, 0, 0, 0, 6, 7, 0]
+        ];
 
 
-dijkstra = {}
+graph = graph2
 
-# First step of the algorithm, populating the resuts matrix with infinite in all nodes but the start
-for i in range(len(graph)):
-    dijkstra[i]=[float('inf'),['']]
+# Initially setting all distances as infinite and distance to the origin node as 0
+dijkstra = [float('inf') for node in graph] 
+dijkstra[0] = 0
 
-dijkstra[0]=[0, '0']
+# Adding fist tnode to the visited nodes list and initializing with values of the edges from the first node
+visited_nodes = [0]
+for edge in range(len(graph[0])):
+    if graph[0][edge] != 0:
+        dijkstra[edge] = graph[0][edge]
 
-# Second and third steps of the algorithm. For each node visit the neibourghs and assign them the value of the cost to reach them from the starting node if this is lower than its current value.
-for node in dijkstra.keys():
-    for vertex in range(len(graph[node])):
-        if graph[node][vertex] and  dijkstra[vertex][0] > dijkstra[node][0] + graph[node][vertex]:
-            dijkstra[vertex][0] = dijkstra[node][0] + graph[node][vertex]
-            dijkstra[vertex][1] = dijkstra[node][1]+'-'+str(vertex)            
 
-# Print the final result
-print ("The shortest path to node {} is through {} with a total cost of {}".format(destination_node, dijkstra[destination_node][1], dijkstra[destination_node][0]))
+
+# While there are nodes not visited, visit the node with the lowest value that has not been visited yet and update all the values of it edges following Dijkstra's algorithm
+while len(visited_nodes) is not len(graph):
+    lowest_node = dijkstra.index(sorted(dijkstra)[len(visited_nodes)])
+    visited_nodes.append(lowest_node)
+    for edge in range(len(graph[lowest_node])):
+        if graph[lowest_node][edge] != 0 and dijkstra[edge] > dijkstra[lowest_node] + graph[lowest_node][edge]:
+            dijkstra[edge] = dijkstra[lowest_node] + graph[lowest_node][edge]
+
+# List with the minimum distance to each node
+print(dijkstra)
+
